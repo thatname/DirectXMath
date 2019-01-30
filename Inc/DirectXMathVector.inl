@@ -7645,6 +7645,12 @@ inline XMVECTOR XM_CALLCONV XMVector2Transform
     float32x2_t VL = vget_low_f32( V );
     float32x4_t Result = vmlaq_lane_f32( M.r[3], M.r[1], VL, 1 ); // Y
     return vmlaq_lane_f32( Result, M.r[0], VL, 0 ); // X
+#elif defined(_XM_AVX2_INTRINSICS_)
+    XMVECTOR vResult = _mm_permute_ps(V, _MM_SHUFFLE(1, 1, 1, 1)); // Y
+    vResult = _mm_fmadd_ps(vResult, M.r[1], M.r[3]);
+    XMVECTOR vTemp = _mm_broadcastss_ps(V); // X
+    vResult = _mm_fmadd_ps(vTemp, M.r[0], vResult);
+    return vResult;
 #elif defined(_XM_SSE_INTRINSICS_)
     XMVECTOR vResult = XM_PERMUTE_PS(V,_MM_SHUFFLE(0,0,0,0));
     vResult = _mm_mul_ps(vResult,M.r[0]);
@@ -7785,6 +7791,7 @@ inline XMFLOAT4* XM_CALLCONV XMVector2TransformStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
@@ -8115,6 +8122,7 @@ inline XMFLOAT2* XM_CALLCONV XMVector2TransformCoordStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
@@ -8348,6 +8356,12 @@ inline XMVECTOR XM_CALLCONV XMVector2TransformNormal
     float32x2_t VL = vget_low_f32( V );
     float32x4_t Result = vmulq_lane_f32( M.r[1], VL, 1 ); // Y
     return vmlaq_lane_f32( Result, M.r[0], VL, 0 ); // X
+#elif defined(_XM_AVX2_INTRINSICS_)
+    XMVECTOR vResult = _mm_permute_ps(V, _MM_SHUFFLE(1, 1, 1, 1)); // Y
+    vResult = _mm_mul_ps(vResult, M.r[1]);
+    XMVECTOR vTemp = _mm_broadcastss_ps(V); // X
+    vResult = _mm_fmadd_ps(vTemp, M.r[0], vResult);
+    return vResult;
 #elif defined(_XM_SSE_INTRINSICS_)
     XMVECTOR vResult = XM_PERMUTE_PS(V,_MM_SHUFFLE(0,0,0,0));
     vResult = _mm_mul_ps(vResult,M.r[0]);
@@ -8471,6 +8485,7 @@ inline XMFLOAT2* XM_CALLCONV XMVector2TransformNormalStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
@@ -10102,6 +10117,14 @@ inline XMVECTOR XM_CALLCONV XMVector3Transform
     XMVECTOR vResult = vmlaq_lane_f32( M.r[3], M.r[0], VL, 0 ); // X
     vResult = vmlaq_lane_f32( vResult, M.r[1], VL, 1 ); // Y
     return vmlaq_lane_f32( vResult, M.r[2], vget_high_f32( V ), 0 ); // Z
+#elif defined(_XM_AVX2_INTRINSICS_)
+    XMVECTOR vResult = _mm_permute_ps(V, _MM_SHUFFLE(2, 2, 2, 2)); // Z
+    vResult = _mm_fmadd_ps(vResult, M.r[2], M.r[3]);
+    XMVECTOR vTemp = _mm_permute_ps(V, _MM_SHUFFLE(1, 1, 1, 1)); // Y
+    vResult = _mm_fmadd_ps(vTemp, M.r[1], vResult);
+    vTemp = _mm_broadcastss_ps(V); // X
+    vResult = _mm_fmadd_ps(vTemp, M.r[0], vResult);
+    return vResult;
 #elif defined(_XM_SSE_INTRINSICS_)
     XMVECTOR vResult = XM_PERMUTE_PS(V,_MM_SHUFFLE(0,0,0,0));
     vResult = _mm_mul_ps(vResult,M.r[0]);
@@ -10260,6 +10283,7 @@ inline XMFLOAT4* XM_CALLCONV XMVector3TransformStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
@@ -10676,6 +10700,7 @@ inline XMFLOAT3* XM_CALLCONV XMVector3TransformCoordStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
@@ -11016,6 +11041,14 @@ inline XMVECTOR XM_CALLCONV XMVector3TransformNormal
     XMVECTOR vResult = vmulq_lane_f32( M.r[0], VL, 0 ); // X
     vResult = vmlaq_lane_f32( vResult, M.r[1], VL, 1 ); // Y
     return vmlaq_lane_f32( vResult, M.r[2], vget_high_f32( V ), 0 ); // Z
+#elif defined(_XM_AVX2_INTRINSICS_)
+    XMVECTOR vResult = _mm_permute_ps(V, _MM_SHUFFLE(2, 2, 2, 2)); // Z
+    vResult = _mm_mul_ps(vResult, M.r[2]);
+    XMVECTOR vTemp = _mm_permute_ps(V, _MM_SHUFFLE(1, 1, 1, 1)); // Y
+    vResult = _mm_fmadd_ps(vTemp, M.r[1], vResult);
+    vTemp = _mm_broadcastss_ps(V); // X
+    vResult = _mm_fmadd_ps(vTemp, M.r[0], vResult);
+    return vResult;
 #elif defined(_XM_SSE_INTRINSICS_)
     XMVECTOR vResult = XM_PERMUTE_PS(V,_MM_SHUFFLE(0,0,0,0));
     vResult = _mm_mul_ps(vResult,M.r[0]);
@@ -11166,6 +11199,7 @@ inline XMFLOAT3* XM_CALLCONV XMVector3TransformNormalStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
@@ -11653,6 +11687,7 @@ inline XMFLOAT3* XM_CALLCONV XMVector3ProjectStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     const float HalfViewportWidth = ViewportWidth * 0.5f;
     const float HalfViewportHeight = ViewportHeight * 0.5f;
@@ -12254,6 +12289,7 @@ inline XMFLOAT3* XM_CALLCONV XMVector3UnprojectStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     static const XMVECTORF32 D = { { { -1.0f, 1.0f, 0.0f, 0.0f } } };
 
@@ -14116,6 +14152,16 @@ inline XMVECTOR XM_CALLCONV XMVector4Transform
     float32x2_t VH = vget_high_f32( V );
     vResult = vmlaq_lane_f32( vResult, M.r[2], VH, 0  ); // Z
     return vmlaq_lane_f32( vResult, M.r[3], VH, 1 ); // W
+#elif defined(_XM_AVX2_INTRINSICS_)
+    XMVECTOR vResult = _mm_permute_ps(V, _MM_SHUFFLE(3, 3, 3, 3)); // W
+    vResult = _mm_mul_ps(vResult, M.r[3]);
+    XMVECTOR vTemp = _mm_permute_ps(V, _MM_SHUFFLE(2, 2, 2, 2)); // Z
+    vResult = _mm_fmadd_ps(vTemp, M.r[2], vResult);
+    vTemp = _mm_permute_ps(V, _MM_SHUFFLE(1, 1, 1, 1)); // Y
+    vResult = _mm_fmadd_ps(vTemp, M.r[1], vResult);
+    vTemp = _mm_broadcastss_ps(V); // X
+    vResult = _mm_fmadd_ps(vTemp, M.r[0], vResult);
+    return vResult;
 #elif defined(_XM_SSE_INTRINSICS_)
     // Splat x,y,z and w
     XMVECTOR vTempX = XM_PERMUTE_PS(V,_MM_SHUFFLE(0,0,0,0));
@@ -14294,6 +14340,7 @@ inline XMFLOAT4* XM_CALLCONV XMVector4TransformStream
     }
 
     return pOutputStream;
+// TODO - #elif defined(_XM_AVX2_INTRINSICS_)
 #elif defined(_XM_SSE_INTRINSICS_)
     auto pInputVector = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pOutputVector = reinterpret_cast<uint8_t*>(pOutputStream);
