@@ -21,6 +21,11 @@
 
 //------------------------------------------------------------------------------
 
+#if !defined(_XM_NO_INTRINSICS_) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma float_control(push)
+#pragma float_control(precise, on)
+#endif
+
 // Return true if any entry in the matrix is NaN
 inline bool XM_CALLCONV XMMatrixIsNaN
 (
@@ -59,9 +64,9 @@ inline bool XM_CALLCONV XMMatrixIsNaN
     vY = vorrq_u32(vY,vW);
     vX = vorrq_u32(vX,vY);
     // If any tested true, return true
-    int8x8x2_t vTemp = vzip_u8(vget_low_u8(vX), vget_high_u8(vX));
-    vTemp = vzip_u16(vTemp.val[0], vTemp.val[1]);
-    uint32_t r = vget_lane_u32(vTemp.val[1], 1);
+    uint8x8x2_t vTemp = vzip_u8(vget_low_u8(vX), vget_high_u8(vX));
+    uint16x4x2_t vTemp2 = vzip_u16(vTemp.val[0], vTemp.val[1]);
+    uint32_t r = vget_lane_u32(vTemp2.val[1], 1);
     return (r != 0);
 #elif defined(_XM_SSE_INTRINSICS_)
     // Load in registers
@@ -83,6 +88,10 @@ inline bool XM_CALLCONV XMMatrixIsNaN
 #else
 #endif
 }
+
+#if !defined(_XM_NO_INTRINSICS_) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma float_control(pop)
+#endif
 
 //------------------------------------------------------------------------------
 
@@ -123,9 +132,9 @@ inline bool XM_CALLCONV XMMatrixIsInfinite
     vTemp3 = vorrq_u32(vTemp3,vTemp4);
     vTemp1 = vorrq_u32(vTemp1,vTemp3);
     // If any are infinity, the signs are true.
-    int8x8x2_t vTemp = vzip_u8(vget_low_u8(vTemp1), vget_high_u8(vTemp1));
-    vTemp = vzip_u16(vTemp.val[0], vTemp.val[1]);
-    uint32_t r = vget_lane_u32(vTemp.val[1], 1);
+    uint8x8x2_t vTemp = vzip_u8(vget_low_u8(vTemp1), vget_high_u8(vTemp1));
+    uint16x4x2_t vTemp5 = vzip_u16(vTemp.val[0], vTemp.val[1]);
+    uint32_t r = vget_lane_u32(vTemp5.val[1], 1);
     return (r != 0);
 #elif defined(_XM_SSE_INTRINSICS_)
     // Mask off the sign bits
@@ -192,9 +201,9 @@ inline bool XM_CALLCONV XMMatrixIsIdentity
     vTemp1 = vandq_u32(vTemp1,vTemp2);
     vTemp3 = vandq_u32(vTemp3,vTemp4);
     vTemp1 = vandq_u32(vTemp1,vTemp3);
-    int8x8x2_t vTemp = vzip_u8(vget_low_u8(vTemp1), vget_high_u8(vTemp1));
-    vTemp = vzip_u16(vTemp.val[0], vTemp.val[1]);
-    uint32_t r = vget_lane_u32(vTemp.val[1], 1);
+    uint8x8x2_t vTemp = vzip_u8(vget_low_u8(vTemp1), vget_high_u8(vTemp1));
+    uint16x4x2_t vTemp5 = vzip_u16(vTemp.val[0], vTemp.val[1]);
+    uint32_t r = vget_lane_u32(vTemp5.val[1], 1);
     return ( r == 0xFFFFFFFFU );
 #elif defined(_XM_SSE_INTRINSICS_)
     XMVECTOR vTemp1 = _mm_cmpeq_ps(M.r[0],g_XMIdentityR0);
@@ -3246,7 +3255,7 @@ inline XMMATRIX& XMMATRIX::operator/= (float S)
     r[3] = XMVectorDivide( r[3], vS );
     return *this;
 #elif defined(_XM_ARM_NEON_INTRINSICS_)
-#if defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64)
+#if defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || __aarch64__
     float32x4_t vS = vdupq_n_f32( S );
     r[0] = vdivq_f32( r[0], vS );
     r[1] = vdivq_f32( r[1], vS );
@@ -3333,7 +3342,7 @@ inline XMMATRIX XMMATRIX::operator/ (float S) const
     R.r[3] = XMVectorDivide( r[3], vS );
     return R;
 #elif defined(_XM_ARM_NEON_INTRINSICS_)
-#if defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64)
+#if defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || __aarch64__
     float32x4_t vS = vdupq_n_f32( S );
     XMMATRIX R;
     R.r[0] = vdivq_f32( r[0], vS );

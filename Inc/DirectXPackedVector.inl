@@ -26,7 +26,7 @@ inline float XMConvertHalfToFloat
     __m128i V1 = _mm_cvtsi32_si128( static_cast<int>(Value) );
     __m128 V2 = _mm_cvtph_ps( V1 );
     return _mm_cvtss_f32( V2 );
-#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64)) && !defined(_XM_NO_INTRINSICS_)
+#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || __aarch64__) && !defined(_XM_NO_INTRINSICS_)
     uint16x4_t vHalf = vdup_n_u16(Value);
     float32x4_t vFloat = vcvt_f32_f16(vreinterpret_f16_u16(vHalf));
     return vgetq_lane_f32(vFloat, 0);
@@ -258,7 +258,7 @@ inline float* XMConvertHalfToFloatStream
     XM_SFENCE();
 
     return pOutputStream;
-#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64)) && !defined(_XM_NO_INTRINSICS_)
+#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || __aarch64__) && !defined(_XM_NO_INTRINSICS_)
     auto pHalf = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pFloat = reinterpret_cast<uint8_t*>(pOutputStream);
 
@@ -395,7 +395,7 @@ inline HALF XMConvertFloatToHalf
     __m128 V1 = _mm_set_ss( Value );
     __m128i V2 = _mm_cvtps_ph( V1, 0 );
     return static_cast<HALF>( _mm_cvtsi128_si32(V2) );
-#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64)) && !defined(_XM_NO_INTRINSICS_)
+#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || __aarch64__) && !defined(_XM_NO_INTRINSICS_)
     float32x4_t vFloat = vdupq_n_f32(Value);
     float16x4_t vHalf = vcvt_f16_f32(vFloat);
     return vget_lane_u16(vreinterpret_u16_f16(vHalf), 0);
@@ -624,7 +624,7 @@ inline HALF* XMConvertFloatToHalfStream
     }
 
     return pOutputStream;
-#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64)) && !defined(_XM_NO_INTRINSICS_)
+#elif defined(_XM_ARM_NEON_INTRINSICS_) && (defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || __aarch64__) && !defined(_XM_NO_INTRINSICS_)
     auto pFloat = reinterpret_cast<const uint8_t*>(pInputStream);
     auto pHalf = reinterpret_cast<uint8_t*>(pOutputStream);
 
@@ -2959,8 +2959,8 @@ inline void XM_CALLCONV XMStoreXDecN4
     int32x4_t vResultw = vandq_s32(vResulti,g_XMMaskW);
     vResulti = vaddq_s32(vResulti,vResultw);
     // Do a horizontal or of all 4 entries
-    uint32x2_t vTemp = vget_low_u32(vreinterpret_u32_s32(vResulti));
-    uint32x2_t vhi = vget_high_u32(vreinterpret_u32_s32(vResulti));
+    uint32x2_t vTemp = vget_low_u32(vreinterpretq_u32_s32(vResulti));
+    uint32x2_t vhi = vget_high_u32(vreinterpretq_u32_s32(vResulti));
     vTemp = vorr_u32( vTemp, vhi );
     vTemp = vpadd_u32( vTemp, vTemp );
     vst1_lane_u32( &pDestination->v, vTemp, 0 );
@@ -3027,8 +3027,8 @@ inline void XM_CALLCONV XMStoreXDec4
     int32x4_t vResulti = vcvtq_s32_f32(vResult);
     vResulti = vandq_s32(vResulti,MaskXDec4);
     // Do a horizontal or of 4 entries
-    uint32x2_t vTemp = vget_low_u32(vreinterpret_u32_s32(vResulti));
-    uint32x2_t vTemp2 = vget_high_u32(vreinterpret_u32_s32(vResulti));
+    uint32x2_t vTemp = vget_low_u32(vreinterpretq_u32_s32(vResulti));
+    uint32x2_t vTemp2 = vget_high_u32(vreinterpretq_u32_s32(vResulti));
     vTemp = vorr_u32( vTemp, vTemp2 );
     // Perform a single bit left shift on y|w
     vTemp2 = vdup_lane_u32( vTemp, 1 );
@@ -3309,8 +3309,8 @@ inline void XM_CALLCONV XMStoreDecN4
     int32x4_t vResulti = vcvtq_s32_f32(vResult);
     vResulti = vandq_s32(vResulti,g_XMMaskDec4);
     // Do a horizontal or of 4 entries
-    uint32x2_t vTemp = vget_low_u32(vreinterpret_u32_s32(vResulti));
-    uint32x2_t vhi = vget_high_u32(vreinterpret_u32_s32(vResulti));
+    uint32x2_t vTemp = vget_low_u32(vreinterpretq_u32_s32(vResulti));
+    uint32x2_t vhi = vget_high_u32(vreinterpretq_u32_s32(vResulti));
     vTemp = vorr_u32( vTemp, vhi );
     vTemp = vpadd_u32( vTemp, vTemp );
     vst1_lane_u32( &pDestination->v, vTemp, 0 );
@@ -3370,8 +3370,8 @@ inline void XM_CALLCONV XMStoreDec4
     int32x4_t vResulti = vcvtq_s32_f32(vResult);
     vResulti = vandq_s32(vResulti,g_XMMaskDec4);
     // Do a horizontal or of all 4 entries
-    uint32x2_t vTemp = vget_low_u32(vreinterpret_u32_s32(vResulti));
-    uint32x2_t vhi = vget_high_u32(vreinterpret_u32_s32(vResulti));
+    uint32x2_t vTemp = vget_low_u32(vreinterpretq_u32_s32(vResulti));
+    uint32x2_t vhi = vget_high_u32(vreinterpretq_u32_s32(vResulti));
     vTemp = vorr_u32( vTemp, vhi );
     vTemp = vpadd_u32( vTemp, vTemp );
     vst1_lane_u32( &pDestination->v, vTemp, 0 );
