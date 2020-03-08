@@ -1498,7 +1498,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixRotationZ(float Angle) noexcept
 }
 
 //------------------------------------------------------------------------------
-
+/*
 inline XMMATRIX XM_CALLCONV XMMatrixRotationRollPitchYaw
 (
     float Pitch,
@@ -1520,7 +1520,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixRotationRollPitchYawFromVector
     XMVECTOR Q = XMQuaternionRotationRollPitchYawFromVector(Angles);
     return XMMatrixRotationQuaternion(Q);
 }
-
+*/
 //------------------------------------------------------------------------------
 
 inline XMMATRIX XM_CALLCONV XMMatrixRotationNormal
@@ -1901,6 +1901,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixShadow
 // View and projection initialization operations
 //------------------------------------------------------------------------------
 
+/*
 inline XMMATRIX XM_CALLCONV XMMatrixLookAtLH
 (
     FXMVECTOR EyePosition,
@@ -1975,6 +1976,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixLookToRH
     XMVECTOR NegEyeDirection = XMVectorNegate(EyeDirection);
     return XMMatrixLookToLH(EyePosition, NegEyeDirection, UpDirection);
 }
+*/
 
 //------------------------------------------------------------------------------
 
@@ -1983,6 +1985,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixLookToRH
 #pragma prefast(disable:28931, "PREfast noise: Esp:1266")
 #endif
 
+/*
 inline XMMATRIX XM_CALLCONV XMMatrixPerspectiveLH
 (
     float ViewWidth,
@@ -2921,7 +2924,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixOrthographicOffCenterRH
     return M;
 #endif
 }
-
+*/
 #ifdef _PREFAST_
 #pragma prefast(pop)
 #endif

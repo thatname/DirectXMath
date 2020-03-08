@@ -1452,8 +1452,8 @@ namespace DirectX
     XMMATRIX    XM_CALLCONV     XMMatrixRotationX(float Angle) noexcept;
     XMMATRIX    XM_CALLCONV     XMMatrixRotationY(float Angle) noexcept;
     XMMATRIX    XM_CALLCONV     XMMatrixRotationZ(float Angle) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixRotationRollPitchYaw(float Pitch, float Yaw, float Roll) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixRotationRollPitchYawFromVector(FXMVECTOR Angles) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixRotationRollPitchYaw(float Pitch, float Yaw, float Roll) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixRotationRollPitchYawFromVector(FXMVECTOR Angles) noexcept;
     XMMATRIX    XM_CALLCONV     XMMatrixRotationNormal(FXMVECTOR NormalAxis, float Angle) noexcept;
     XMMATRIX    XM_CALLCONV     XMMatrixRotationAxis(FXMVECTOR Axis, float Angle) noexcept;
     XMMATRIX    XM_CALLCONV     XMMatrixRotationQuaternion(FXMVECTOR Quaternion) noexcept;
@@ -1466,20 +1466,18 @@ namespace DirectX
     XMMATRIX    XM_CALLCONV     XMMatrixReflect(FXMVECTOR ReflectionPlane) noexcept;
     XMMATRIX    XM_CALLCONV     XMMatrixShadow(FXMVECTOR ShadowPlane, FXMVECTOR LightPosition) noexcept;
 
-    XMMATRIX    XM_CALLCONV     XMMatrixLookAtLH(FXMVECTOR EyePosition, FXMVECTOR FocusPosition, FXMVECTOR UpDirection) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixLookAtRH(FXMVECTOR EyePosition, FXMVECTOR FocusPosition, FXMVECTOR UpDirection) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixLookToLH(FXMVECTOR EyePosition, FXMVECTOR EyeDirection, FXMVECTOR UpDirection) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixLookToRH(FXMVECTOR EyePosition, FXMVECTOR EyeDirection, FXMVECTOR UpDirection) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveLH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveRH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveFovRH(float FovAngleY, float AspectRatio, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveOffCenterRH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixOrthographicLH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixOrthographicRH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixOrthographicOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
-    XMMATRIX    XM_CALLCONV     XMMatrixOrthographicOffCenterRH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixLookAt(FXMVECTOR EyePosition, FXMVECTOR FocusPosition, FXMVECTOR UpDirection) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixLookToLH(FXMVECTOR EyePosition, FXMVECTOR EyeDirection, FXMVECTOR UpDirection) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveLH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveRH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveFovRH(float FovAngleY, float AspectRatio, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveOffCenterRH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixOrthographicLH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixOrthographicRH(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixOrthographicOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
+    // XMMATRIX    XM_CALLCONV     XMMatrixOrthographicOffCenterRH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
 
 
     /****************************************************************************
@@ -1515,8 +1513,8 @@ namespace DirectX
     XMVECTOR    XM_CALLCONV     XMQuaternionBaryCentricV(FXMVECTOR Q0, FXMVECTOR Q1, FXMVECTOR Q2, GXMVECTOR F, HXMVECTOR G) noexcept;
 
     XMVECTOR    XM_CALLCONV     XMQuaternionIdentity() noexcept;
-    XMVECTOR    XM_CALLCONV     XMQuaternionRotationRollPitchYaw(float Pitch, float Yaw, float Roll) noexcept;
-    XMVECTOR    XM_CALLCONV     XMQuaternionRotationRollPitchYawFromVector(FXMVECTOR Angles) noexcept;
+    // XMVECTOR    XM_CALLCONV     XMQuaternionRotationRollPitchYaw(float Pitch, float Yaw, float Roll) noexcept;
+    // XMVECTOR    XM_CALLCONV     XMQuaternionRotationRollPitchYawFromVector(FXMVECTOR Angles) noexcept;
     XMVECTOR    XM_CALLCONV     XMQuaternionRotationNormal(FXMVECTOR NormalAxis, float Angle) noexcept;
     XMVECTOR    XM_CALLCONV     XMQuaternionRotationAxis(FXMVECTOR Axis, float Angle) noexcept;
     XMVECTOR    XM_CALLCONV     XMQuaternionRotationMatrix(FXMMATRIX M) noexcept;
@@ -2166,10 +2164,39 @@ namespace DirectX
 #endif
     }
 
+
 #include "DirectXMathConvert.inl"
 #include "DirectXMathVector.inl"
 #include "DirectXMathMatrix.inl"
 #include "DirectXMathMisc.inl"
+
+	/*
+		Functions reimplemented in Z-up coordinate system.
+		X-Front-Roll
+		Y-Right-Pitch
+		Z-Up-Yaw
+	*/
+
+	// View matrics.
+	XMMATRIX    XM_CALLCONV     XMMatrixLookAt(FXMVECTOR EyePosition, FXMVECTOR FocusPosition, FXMVECTOR UpDirection) noexcept;
+	XMMATRIX    XM_CALLCONV     XMMatrixLookTo(FXMVECTOR EyePosition, FXMVECTOR EyeDirection, FXMVECTOR UpDirection) noexcept;
+
+	// Projection matrics.
+	XMMATRIX    XM_CALLCONV     XMMatrixPerspective(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
+	XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveFov(float FovAngleY, float AspectRatio, float NearZ, float FarZ) noexcept;
+	XMMATRIX    XM_CALLCONV     XMMatrixPerspectiveOffCenter(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
+	XMMATRIX    XM_CALLCONV     XMMatrixOrthographic(float ViewWidth, float ViewHeight, float NearZ, float FarZ) noexcept;
+	XMMATRIX    XM_CALLCONV     XMMatrixOrthographicOffCenter(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ) noexcept;
+
+	// Eular angle matrics.
+	XMMATRIX    XM_CALLCONV     XMMatrixRotationRollPitchYaw(float Roll, float Pitch, float Yaw) noexcept;
+	XMMATRIX    XM_CALLCONV     XMMatrixRotationRollPitchYawFromVector(FXMVECTOR Angles) noexcept;
+
+	XMVECTOR    XM_CALLCONV     XMQuaternionRotationRollPitchYaw(float Roll, float Pitch, float Yaw) noexcept;
+	XMVECTOR    XM_CALLCONV     XMQuaternionRotationRollPitchYawFromVector(FXMVECTOR Angles) noexcept;
+
+
+#include "DirectXMathZUp.inl"
 
 #ifdef __clang__
 #pragma clang diagnostic pop

@@ -576,7 +576,7 @@ inline XMVECTOR XM_CALLCONV XMQuaternionIdentity() noexcept
 }
 
 //------------------------------------------------------------------------------
-
+/* 
 inline XMVECTOR XM_CALLCONV XMQuaternionRotationRollPitchYaw
 (
     float Pitch,
@@ -618,7 +618,7 @@ inline XMVECTOR XM_CALLCONV XMQuaternionRotationRollPitchYawFromVector
 
     return Q;
 }
-
+*/
 //------------------------------------------------------------------------------
 
 inline XMVECTOR XM_CALLCONV XMQuaternionRotationNormal
